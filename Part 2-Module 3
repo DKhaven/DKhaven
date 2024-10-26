@@ -1,0 +1,25 @@
+while True:
+    try:
+        current_time = int(input("Enter the current time (0-23): "))
+        if not (0 <= current_time < 24):
+            print("Enter a valid hour between 0 and 23.")
+            continue
+        break
+    except ValueError:
+        print("Invalid. Enter a number between 0 and 23.")
+
+while True:
+    try:
+        wait_hours = int(input("Enter the number of hours to wait for the alarm: "))
+        if wait_hours < 0:
+            print("Enter a non-negative number of hours.")
+            continue
+        break
+    except ValueError:
+        print("Invalid. Please enter a valid number.")
+
+# Calculate the future time
+alarm_time = (current_time + wait_hours) % 24
+
+# Output the result
+print(f"The alarm will go off at: {alarm_time:02d}:00")
