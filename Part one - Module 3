@@ -1,0 +1,18 @@
+while True:
+    try:
+        meal_cost = float(input("Enter the food total: $"))
+        if meal_cost < 0:
+            print("You entered a negative number. Please try again.")
+        else:
+            break
+    except ValueError:
+        print("Invalid. Please enter the total food cost.")
+
+tip_amount = meal_cost * 0.18
+tax_amount = meal_cost * 0.07
+total_cost = meal_cost + tip_amount + tax_amount
+
+print(f"Meal cost: ${meal_cost:.2f}")
+print(f"Tip amount (18%): ${tip_amount:.2f}")
+print(f"Tax amount (7%): ${tax_amount:.2f}")
+print(f"Total cost: ${total_cost:.2f}")
