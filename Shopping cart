@@ -1,0 +1,48 @@
+class ItemToPurchase:
+    # Attributes
+    # item_name (string)
+    # item_price (float)
+    # item_quantity (int)
+
+    def __init__(self):
+        # Item's name = "none", item's price = 0, item's quantity = 0
+        self.item_name = "none"
+        self.item_price = 0.0
+        self.item_quantity = 0
+
+    def print_item_cost(self):
+        total_cost = self.item_quantity * self.item_price
+        print(f"{self.item_name} {self.item_quantity} @ ${self.item_price} = ${total_cost}")
+
+# Get item details from user
+def get_item_details(item_number):
+    print(f"Item {item_number}")
+    item = ItemToPurchase()
+    item.item_name = input("Enter the item name: ")
+    while True:
+        try:
+            item.item_price = float(input("Enter the item price: "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid price.")
+    while True:
+        try:
+            item.item_quantity = int(input("Enter the item quantity: "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid quantity.")
+    return item
+
+# Main section
+if __name__ == "__main__":
+    item1 = get_item_details(1)
+    item2 = get_item_details(2)
+
+    # Print individual item costs
+    print("\nTOTAL COST")
+    item1.print_item_cost()
+    item2.print_item_cost()
+
+    # Calculate and print total cost
+    total_cost = (item1.item_quantity * item1.item_price) + (item2.item_quantity * item2.item_price)
+    print(f"Total: ${total_cost}")
