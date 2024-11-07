@@ -1,0 +1,84 @@
+import json
+
+class Rainfall:
+    def __init__(self, years):
+        self.years = years
+        self.total_rainfall = 0
+        self.num_months = 0
+        self.data = {}
+
+    def collect_data(self):
+        # Outer loop to iterate over each year
+        for year in range(1, self.years + 1):
+            self.data[year] = []
+            print(f"Year {year}")
+            # Inner loop to iterate over each month
+            for month in range(1, 13):
+                while True:
+                    try:
+                        rainfall = float(input(f"Enter the rainfall (in inches) for month {month}: "))
+                        if rainfall < 0:
+                            raise ValueError("Rainfall cannot be negative")
+                        self.data[year].append(rainfall)
+                        self.total_rainfall += rainfall
+                        self.num_months += 1
+                        break
+                    except ValueError as e:
+                        print(f"Invalid input: {e}. Please enter a valid number.")
+
+    def calculate_average(self):
+        return self.total_rainfall / self.num_months if self.num_months else 0
+
+    def display_results(self):
+        print(f"\nNumber of months: {self.num_months}")
+        print(f"Total inches of rainfall: {self.total_rainfall:.2f}")
+        print(f"Average rainfall per month: {self.calculate_average():.2f} inches")
+
+    def save_data(self, filename):
+        try:
+            with open(filename, 'w') as file:
+                json.dump(self.data, file)
+            print(f"Data saved to {filename}")
+        except IOError as e:
+            print(f"Error saving data: {e}")
+
+    def load_data(self, filename):
+        try:
+            with open(filename, 'r') as file:
+                self.data = json.load(file)
+            self.total_rainfall = sum(sum(month) for month in self.data.values())
+            self.num_months = sum(len(month) for month in self.data.values())
+            print(f"Data loaded from {filename}")
+        except FileNotFoundError:
+            print(f"No data found in {filename}")
+        except json.JSONDecodeError as e:
+            print(f"Error loading data: {e}")
+        except IOError as e:
+            print(f"Error reading file: {e}")
+
+# Ask the user for the number of years with error handling
+while True:
+    try:
+        num_years = int(input("Enter the number of years: "))
+        if num_years <= 0:
+            raise ValueError("Number of years must be a positive integer")
+        break
+    except ValueError as e:
+        print(f"Invalid input: {e}. Please enter a valid number.")
+
+# Create a Rainfall object
+rainfall_data = Rainfall(num_years)
+
+# Collect data, calculate averages, and display results
+rainfall_data.collect_data()
+rainfall_data.display_results()
+
+# Save data to a file
+rainfall_data.save_data('rainfall_data.json')
+
+# Load data from a file (uncomment to use)
+# rainfall_data.load_data('rainfall_data.json')
+
+
+
+
