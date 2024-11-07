@@ -1,0 +1,114 @@
+import json
+
+class Book:
+    def __init__(self, books_purchased=0):
+        self.books_purchased = books_purchased
+
+    def calculate_points(self):
+        if self.books_purchased == 0:
+            return 0
+        elif self.books_purchased == 2:
+            return 5
+        elif self.books_purchased == 4:
+            return 15
+        elif self.books_purchased == 6:
+            return 30
+        elif self.books_purchased >= 8:
+            return 60
+        else:
+            return 0
+
+    def add_books(self, count):
+        self.books_purchased += count
+
+    def remove_books(self, count):
+        if count > self.books_purchased:
+            raise ValueError("Cannot remove more books than purchased")
+        self.books_purchased -= count
+
+    def save_data(self, filename):
+        data = {
+            'books_purchased': self.books_purchased
+        }
+        try:
+            with open(filename, 'w') as file:
+                json.dump(data, file)
+            print(f"Data saved to {filename}")
+        except IOError as e:
+            print(f"Error saving data: {e}")
+
+    def load_data(self, filename):
+        try:
+            with open(filename, 'r') as file:
+                data = json.load(file)
+            self.books_purchased = data.get('books_purchased', 0)
+            print(f"Data loaded from {filename}")
+        except FileNotFoundError:
+            print(f"No data found in {filename}")
+        except json.JSONDecodeError as e:
+            print(f"Error loading data: {e}")
+        except IOError as e:
+            print(f"Error reading file: {e}")
+
+# Main program
+def main():
+    book = Book()
+
+    # Load data from a file if it exists
+    book.load_data('book_data.json')
+
+    while True:
+        print("\nMenu:")
+        print("1. View points")
+        print("2. Add books")
+        print("3. Remove books")
+        print("4. Enter books purchased this month and view points")
+        print("5. Exit and save data")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            points_awarded = book.calculate_points()
+            print(f"Points awarded: {points_awarded}")
+        elif choice == "2":
+            try:
+                count = int(input("Enter the number of books to add: "))
+                if count < 0:
+                    raise ValueError("Number of books cannot be negative")
+                book.add_books(count)
+                print(f"Books added. Total books purchased: {book.books_purchased}")
+            except ValueError as e:
+                print(f"Invalid input: {e}. Please enter a valid number.")
+        elif choice == "3":
+            try:
+                count = int(input("Enter the number of books to remove: "))
+                if count < 0:
+                    raise ValueError("Number of books cannot be negative")
+                book.remove_books(count)
+                print(f"Books removed. Total books purchased: {book.books_purchased}")
+            except ValueError as e:
+                print(f"Invalid input: {e}. Please enter a valid number.")
+            except ValueError as e:
+                print(f"Error: {e}")
+        elif choice == "4":
+            while True:
+                try:
+                    books_purchased = int(input("Enter the number of books purchased this month: "))
+                    if books_purchased < 0:
+                        raise ValueError("Number of books cannot be negative")
+                    break
+                except ValueError as e:
+                    print(f"Invalid input: {e}. Please enter a valid number.")
+            book.books_purchased = books_purchased
+            points_awarded = book.calculate_points()
+            print(f"Points awarded for this month: {points_awarded}")
+        elif choice == "5":
+            # Save data to a file and exit
+            book.save_data('book_data.json')
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 5.")
+
+# Run the main program
+if __name__ == "__main__":
+    main()
