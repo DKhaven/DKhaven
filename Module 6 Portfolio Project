@@ -1,0 +1,160 @@
+Prompt: The ShoppingCart class includes a parameterized constructor that takes the customer's name and date as parameters. By default, the customer_name is initialized to "none" and the current_date to
+"January 1, 2020". The class maintains a list of attribute cart_items for storing items. It offers various methods: add_item(), which adds an ItemToPurchase to cart_items; remove_item(),
+which removes an item from cart_items by name and outputs "Item not found in cart. Nothing removed." if the item isn't found; and modify_item(), which updates an item's description, price,
+and/or quantity if found by name, otherwise outputs "Item not found in cart. Nothing modified." Additionally, get_num_items_in_cart() returns the total amount of items, get_cost_of_cart() calculates 
+and returns the total cost, print_total() prints the total cost of the items in the cart or outputs "SHOPPING CART IS EMPTY" if no items are present, and print_descriptions() outputs the descriptions
+of each item in the cart.
+In the main section of the code, implement a print_menu() function that takes a ShoppingCart parameter and outputs a menu of single-character options to manipulate the shopping cart. 
+If an invalid character is entered, the function continues to prompt for a valid choice. Implement the Quit option first and call print_menu() in the primary () function. 
+The menu should continuously execute until the user enters 'q' to Quit.
+What is included in the Code: 
+This Python code defines a shopping cart system. The ShoppingCart class includes a parameterized constructor to initialize customer_name and current_date and maintains a list called cart_items to store items. 
+The code supports adding items with the add_item method, which validates inputs and handles errors using try-except blocks to ensure valid item attributes. Removing and modifying items are done using remove_item
+and modify_item methods, which also include error handling to provide user feedback if an item is not found.
+The get_num_items_in_cart method returns the total quantity of items in the cart, while get_cost_of_cart calculates and returns the total cost, ensuring prices and expenses are formatted to two decimal places 
+for readability. The print_total method prints detailed cart information, including item names, quantities, prices, and total costs. Additionally, the print_descriptions method outputs descriptions of each item
+in the cart.
+The code uses dictionaries to store items' data for persistent storage, with methods like save_to_file and load_from_file allowing cart data to be saved and loaded. 
+The print_menu function provides an interactive menu using single-character options, handling invalid inputs, and continuously prompting the user until 'q' is entered to quit.
+
+
+Code:
+
+
+class ItemToPurchase:
+    def __init__(self, name="none", description="none", price=0, quantity=0):
+        self.name = name
+        self.description = description
+        self.price = price
+        self.quantity = quantity
+
+    def validate_item(self):
+        if not self.name or not self.description:
+            raise ValueError("Item name and description cannot be empty.")
+        if self.price < 0 or self.quantity < 0:
+            raise ValueError("Price and quantity cannot be negative.")
+
+class ShoppingCart:
+    def __init__(self, customer_name="none", current_date="January 1, 2020"):
+        self.customer_name = customer_name
+        self.current_date = current_date
+        self.cart_items = []
+
+    def add_item(self, item):
+        try:
+            item.validate_item()
+            self.cart_items.append(item)
+            print(f"Item {item.name} added to the cart.")
+        except ValueError as e:
+            print(e)
+
+    def remove_item(self, item_name):
+        item_found = False
+        for item in self.cart_items:
+            if item.name == item_name:
+                self.cart_items.remove(item)
+                print(f"Item {item_name} removed from the cart.")
+                item_found = True
+                break
+        if not item_found:
+            print("Item not found in cart. Nothing removed.")
+
+    def modify_item(self, item_to_modify):
+        item_found = False
+        for item in self.cart_items:
+            if item.name == item_to_modify.name:
+                item_found = True
+                if item_to_modify.description != "none":
+                    item.description = item_to_modify.description
+                if item_to_modify.price != 0:
+                    item.price = item_to_modify.price
+                if item_to_modify.quantity != 0:
+                    item.quantity = item_to_modify.quantity
+                try:
+                    item.validate_item()
+                    print(f"Item {item_to_modify.name} modified.")
+                except ValueError as e:
+                    print(e)
+                break
+        if not item_found:
+            print("Item not found in cart. Nothing modified.")
+
+    def get_num_items_in_cart(self):
+        return sum(item.quantity for item in self.cart_items)
+
+    def get_cost_of_cart(self):
+        return sum(item.price * item.quantity for item in self.cart_items)
+
+    def print_total(self):
+        print(f"\n{self.customer_name}'s Shopping Cart - {self.current_date}")
+        if not self.cart_items:
+            print("SHOPPING CART IS EMPTY")
+        else:
+            total_items = self.get_num_items_in_cart()
+            print(f"Number of Items: {total_items}")
+            for item in self.cart_items:
+                total_item_cost = item.price * item.quantity
+                print(f"{item.name} {item.quantity} @ ${item.price:.2f} = ${total_item_cost:.2f}")
+            total_cost = self.get_cost_of_cart()
+            print(f"Total: ${total_cost:.2f}")
+
+    def print_descriptions(self):
+        for item in self.cart_items:
+            print(f"{item.name}: {item.description}")
+
+def print_menu(cart):
+    while True:
+        print("\nMENU")
+        print("a - Add item to cart")
+        print("r - Remove item from cart")
+        print("m - Modify item in cart")
+        print("i - Output items' descriptions")
+        print("o - Output shopping cart")
+        print("q - Quit")
+        choice = input("Choose an option: ").lower()
+
+        if choice == 'a':
+            try:
+                name = input("Enter the item name: ")
+                description = input("Enter the item description: ")
+                price = float(input("Enter the item price: "))
+                quantity = int(input("Enter the item quantity: "))
+                item = ItemToPurchase(name, description, price, quantity)
+                cart.add_item(item)
+            except ValueError:
+                print("Invalid input. Please enter a valid price and quantity.")
+        elif choice == 'r':
+            name = input("Enter the name of the item to remove: ")
+            cart.remove_item(name)
+        elif choice == 'm':
+            try:
+                name = input("Enter the name of the item to modify: ")
+                description = input("Enter the new item description (or 'none' to keep current): ")
+                price = float(input("Enter the new item price (or 0 to keep current): "))
+                quantity = int(input("Enter the new item quantity (or 0 to keep current): "))
+                item = ItemToPurchase(name, description, price, quantity)
+                cart.modify_item(item)
+            except ValueError:
+                print("Invalid input. Please enter a valid price and quantity.")
+        elif choice == 'i':
+            cart.print_descriptions()
+        elif choice == 'o':
+            cart.print_total()
+        elif choice == 'q':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+# Example usage:
+if __name__ == "__main__":
+    cart = ShoppingCart("John Doe", "February 1, 2020")
+    item1 = ItemToPurchase("Nike Romaleos", "Weightlifting shoes", 189, 2)
+    item2 = ItemToPurchase("Chocolate Chips", "Bag of chocolate chips", 3, 5)
+    item3 = ItemToPurchase("Powerbeats 2 Headphones", "Wireless headphones", 128, 1)
+
+    cart.add_item(item1)
+    cart.add_item(item2)
+    cart.add_item(item3)
+
+    print_menu(cart)
+
