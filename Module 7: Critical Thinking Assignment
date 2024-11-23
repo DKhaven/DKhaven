@@ -1,0 +1,51 @@
+A Python program that creates a dictionary containing course numbers and room numbers of the rooms where the courses meet. The dictionary will have key-value pairs and a dictionary containing course numbers and 
+names of the instructors that teach each course, including key-value pairs. The program will also include a dictionary containing each course's course numbers and meeting times with key-value pairs. 
+The user will enter a course number, and then it will display the course's room number, instructor, and meeting time. 
+
+Error handling for when the user inputs a course number: It is converted to uppercase using the .upper() method. This ensures that the program correctly handles inputs regardless of whether they 
+are entered in uppercase, lowercase, or a combination of both.
+The program uses a while loop to prompt users to enter a course number or type 'quit' to exit. If the user enters 'quit,' the loop breaks and the program ends. Otherwise, it displays the details for 
+the entered course number.
+
+# Dictionaries for courses and their details
+room_numbers = {
+    "CSC101": "3004",
+    "CSC102": "4501",
+    "CSC103": "6755",
+    "NET110": "1244",
+    "COM241": "1411"
+}
+
+instructors = {
+    "CSC101": "Haynes",
+    "CSC102": "Alvarado",
+    "CSC103": "Rich",
+    "NET110": "Burke",
+    "COM241": "Lee"
+}
+
+meeting_times = {
+    "CSC101": "8:00 a.m.",
+    "CSC102": "9:00 a.m.",
+    "CSC103": "10:00 a.m.",
+    "NET110": "11:00 a.m.",
+    "COM241": "1:00 p.m."
+}
+
+while True:
+    # Get course number from user
+    course_number = input("Enter a course number (e.g., CSC101) or 'quit' to exit: ").upper()
+    
+    # Check if the user wants to quit
+    if course_number == 'QUIT':
+        print("Goodbye!")
+        break
+    
+    # Details for the entered course number
+    if course_number in room_numbers:
+        print(f"Course: {course_number}")
+        print(f"Room Number: {room_numbers[course_number]}")
+        print(f"Instructor: {instructors[course_number]}")
+        print(f"Meeting Time: {meeting_times[course_number]}")
+    else:
+        print("Course number not found.")
