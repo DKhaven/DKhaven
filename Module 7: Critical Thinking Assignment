@@ -4,48 +4,64 @@ The user will enter a course number, and then it will display the course's room 
 
 Error handling for when the user inputs a course number: It is converted to uppercase using the .upper() method. This ensures that the program correctly handles inputs regardless of whether they 
 are entered in uppercase, lowercase, or a combination of both.
-The program uses a while loop to prompt users to enter a course number or type 'quit' to exit. If the user enters 'quit,' the loop breaks and the program ends. Otherwise, it displays the details for 
+The program uses a while loop to prompt users to enter a course number or type 'exit' to quit. If the user enters 'exit,' the loop breaks and the program ends. Otherwise, it displays the details for 
 the entered course number.
 
-# Dictionaries for courses and their details
-room_numbers = {
-    "CSC101": "3004",
-    "CSC102": "4501",
-    "CSC103": "6755",
-    "NET110": "1244",
-    "COM241": "1411"
-}
+class CourseInfo:
+    def __init__(self):
+        self.room_numbers = {
+            "CSC101": "3004",
+            "CSC102": "4501",
+            "CSC103": "6755",
+            "NET110": "1244",
+            "COM241": "1411"
+        }
+        self.instructors = {
+            "CSC101": "Haynes",
+            "CSC102": "Alvarado",
+            "CSC103": "Rich",
+            "NET110": "Burke",
+            "COM241": "Lee"
+        }
+        self.meeting_times = {
+            "CSC101": "8:00 a.m.",
+            "CSC102": "9:00 a.m.",
+            "CSC103": "10:00 a.m.",
+            "NET110": "11:00 a.m.",
+            "COM241": "1:00 p.m."
+        }
 
-instructors = {
-    "CSC101": "Haynes",
-    "CSC102": "Alvarado",
-    "CSC103": "Rich",
-    "NET110": "Burke",
-    "COM241": "Lee"
-}
+    def get_course_info(self, course_number):
+        course_number = course_number.upper()
+        if course_number in self.room_numbers:
+            return {
+                "Room Number": self.room_numbers[course_number],
+                "Instructor": self.instructors[course_number],
+                "Meeting Time": self.meeting_times[course_number]
+            }
+        else:
+            return None
 
-meeting_times = {
-    "CSC101": "8:00 a.m.",
-    "CSC102": "9:00 a.m.",
-    "CSC103": "10:00 a.m.",
-    "NET110": "11:00 a.m.",
-    "COM241": "1:00 p.m."
-}
-
-while True:
-    # Get course number from user
-    course_number = input("Enter a course number (e.g., CSC101) or 'quit' to exit: ").upper()
+def main():
+    course_info = CourseInfo()
     
-    # Check if the user wants to quit
-    if course_number == 'QUIT':
-        print("Goodbye!")
-        break
+    while True:
+        course_number = input("Enter a course number (e.g., CSC101) or 'exit' to quit: ")
+        
+        if course_number.lower() == 'exit':
+            break
+        
+        info = course_info.get_course_info(course_number)
+        
+        if info:
+            print(f"Course: {course_number.upper()}")
+            for key, value in info.items():
+                print(f"{key}: {value}")
+        else:
+            print("Course number not found.")
     
-    # Details for the entered course number
-    if course_number in room_numbers:
-        print(f"Course: {course_number}")
-        print(f"Room Number: {room_numbers[course_number]}")
-        print(f"Instructor: {instructors[course_number]}")
-        print(f"Meeting Time: {meeting_times[course_number]}")
-    else:
-        print("Course number not found.")
+    print("Goodbye!")
+
+if __name__ == "__main__":
+    main()
+
