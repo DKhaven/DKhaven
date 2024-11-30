@@ -1,4 +1,7 @@
-This Python shopping cart system features two classes: ItemToPurchase and ShoppingCart. The ItemToPurchase class defines individual items with attributes for the name, price, and quantity and includes a method to print the total cost of the item based on these attributes. The ShoppingCart class represents a customer's cart; it is initialized with characteristics for the customer's name, the current date, and a list of store items. It incorporates several methods to manage the cart's contents:
+This Python shopping cart system features two classes: ItemToPurchase and ShoppingCart. The ItemToPurchase class defines individual items with attributes 
+for the name, price, and quantity and includes a method to print the total cost of the item based on these attributes. 
+The ShoppingCart class represents a customer's cart; it is initialized with characteristics for the customer's name, the current date, 
+and a list of store items. It incorporates several methods to manage the cart's contents:
 •	Add_item adds an item to the cart.
 •	Remove_item removes an item by its name, providing feedback if the item is not found.
 •	Modify_item updates the quantity and price of an existing item, also indicating if the item isn't found in the cart.
@@ -7,7 +10,13 @@ Additionally, the class includes:
 •	Determining the total cost of the cart (get_cost_of_cart).
 •	Printing the total cost of all items (print_total).
 •	Listing item descriptions (print_descriptions).
-Features a print_menu function for an interactive menu for the user, allowing them to add, remove, or modify items, view item descriptions, print the total cart cost, or exit the program, including input validation and error handling. The remove_item() method in the ShoppingCart class checks if an item exists in the cart before attempting to remove it, and an error message is printed if the item is not found. Similarly, the modify_item() method ensures that modifications only occur if the item exists. Otherwise, it informs the user that no changes were made. There are checks to ensure item names are not empty when adding or modifying items. Other checks were added to ensure item prices and quantities were non-negative when adding or modifying items: ensuring item names were not empty and prices/quantities were positive when adding or modifying items.
+Features a print_menu function for an interactive menu for the user, allowing them to add, remove, or modify items, view item descriptions, 
+print the total cart cost, or exit the program, including input validation and error handling. The remove_item() method in the ShoppingCart class 
+checks if an item exists in the cart before attempting to remove it, and an error message is printed if the item is not found. Similarly, 
+the modify_item() method ensures that modifications only occur if the item exists. Otherwise, it informs the user that no changes were made. 
+There are checks to ensure item names are not empty when adding or modifying items. Other checks were added to ensure item prices and quantities 
+were non-negative when adding or modifying items: ensuring item names were not empty and prices/quantities were positive when adding or modifying items.
+
 Python Source Code: 
 
 class ItemToPurchase:
